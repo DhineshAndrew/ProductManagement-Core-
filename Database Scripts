@@ -1,0 +1,62 @@
+CREATE TABLE Products (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    ProductName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(500) NOT NULL,
+    Price DECIMAL(18, 2) NOT NULL,
+    Category NVARCHAR(100) NOT NULL,
+    ImagePath NVARCHAR(MAX) NOT NULL
+);
+
+CREATE PROCEDURE sp_AddProduct
+    @ProductName NVARCHAR(100),
+    @Description NVARCHAR(500),
+    @Price DECIMAL(18, 2),
+    @Category NVARCHAR(100),
+    @ImagePath NVARCHAR(MAX)
+AS
+BEGIN
+    INSERT INTO Products (ProductName, Description, Price, Category, ImagePath)
+    VALUES (@ProductName, @Description, @Price, @Category, @ImagePath);
+    
+    SELECT SCOPE_IDENTITY();  
+END;
+
+CREATE PROCEDURE sp_GetProducts
+AS
+BEGIN
+    SELECT * FROM Products;
+END;
+
+CREATE PROCEDURE sp_GetProductById
+    @Id INT
+AS
+BEGIN
+    SELECT * FROM Products
+    WHERE Id = @Id;
+END;
+
+CREATE PROCEDURE sp_UpdateProduct
+    @Id INT,
+    @ProductName NVARCHAR(100),
+    @Description NVARCHAR(500),
+    @Price DECIMAL(18, 2),
+    @Category NVARCHAR(100),
+    @ImagePath NVARCHAR(MAX)
+AS
+BEGIN
+    UPDATE Products
+    SET ProductName = @ProductName,
+        Description = @Description,
+        Price = @Price,
+        Category = @Category,
+        ImagePath = @ImagePath
+    WHERE Id = @Id;
+END;
+
+CREATE PROCEDURE sp_DeleteProduct
+    @Id INT
+AS
+BEGIN
+    DELETE FROM Products
+    WHERE Id = @Id;
+END;
